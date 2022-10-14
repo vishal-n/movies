@@ -232,6 +232,8 @@ class RequstCounterView(APIView):
         """
         To reset the number of requests served
         """
+        global NO_OF_REQUESTS_SERVED
+        NO_OF_REQUESTS_SERVED = 0
 
         finalObj = {"no_of_requests": NO_OF_REQUESTS_SERVED}
         return Response(finalObj)
