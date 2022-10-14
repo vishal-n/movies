@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+
 import os
 import datetime
 
@@ -51,9 +52,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "moviesapp.middleware.request_middleware.simple_middleware",
 ]
 
 ROOT_URLCONF = "movies.urls"
+
+# if DEBUG:
+#     MIDDLEWARE_CLASSES = ('path.to.middleware.RequestCounterMiddleware',) + MIDDLEWARE_CLASSES
 
 TEMPLATES = [
     {

@@ -24,17 +24,12 @@ from moviesapp.models import User, Collection, Movie
 from moviesapp.serializers import UserCreateSerializer, UserListSerializer
 from moviesapp.utils import generate_jwt_token
 from moviesapp.tasks import add
-
-
-NO_OF_REQUESTS_SERVED = 0
+from moviesapp.middleware.request_middleware import NO_OF_REQUESTS_SERVED
 
 
 class TestAppAPIView(APIView):
-    global NO_OF_REQUESTS_SERVED
 
     def get(self, request, format=None):
-        global NO_OF_REQUESTS_SERVED
-        NO_OF_REQUESTS_SERVED += 1
         try:
             result = add.delay(11, 15)
             print(result)
@@ -54,8 +49,6 @@ class RegistrationAPIView(CreateAPIView):
     __doc__ = "Registration API for user"
 
     def post(self, request, *args, **kwargs):
-        global NO_OF_REQUESTS_SERVED
-        NO_OF_REQUESTS_SERVED += 1
 
         try:
             user_serializer = self.serializer_class(data=request.data)
@@ -85,8 +78,6 @@ class LoginView(JSONWebTokenAPIView):
 
     @staticmethod
     def post(request):
-        global NO_OF_REQUESTS_SERVED
-        NO_OF_REQUESTS_SERVED += 1
 
         try:
             serializer = JSONWebTokenSerializer(data=request.data)
@@ -124,9 +115,6 @@ class LogoutView(APIView):
         """
         Logout API for user
         """
-        global NO_OF_REQUESTS_SERVED
-        NO_OF_REQUESTS_SERVED += 1
-
         try:
             user = request.user
             logout(request)
@@ -145,8 +133,6 @@ class UserAPIView(GenericAPIView):
         """
         List all the users.
         """
-        global NO_OF_REQUESTS_SERVED
-        NO_OF_REQUESTS_SERVED += 1
 
         try:
             users = User.objects.all()
@@ -167,8 +153,6 @@ class CredyMoviesAPIView(APIView):
         """
         To get the list of movies from the integrated third party api
         """
-        global NO_OF_REQUESTS_SERVED
-        NO_OF_REQUESTS_SERVED += 1
 
         baseUrl = "https://demo.credy.in/api/v1/maya/movies/"
         try:
@@ -213,8 +197,6 @@ class MoviesCollectionView(APIView):
         """
         To get all the movies under a given collection
         """
-        global NO_OF_REQUESTS_SERVED
-        NO_OF_REQUESTS_SERVED += 1
 
         collection_id = request.GET["collection_uuid"]
         collectionObj = list(Collection.objects.filter(id=collection_id).values())
@@ -233,8 +215,6 @@ class DeleteCollectionView(APIView):
         """
         To delete a given collection
         """
-        global NO_OF_REQUESTS_SERVED
-        NO_OF_REQUESTS_SERVED += 1
 
         collection_id = request.GET.get("collection_uuid")
         recordsToDelete = Collection.objects.filter(id=collection_id)
@@ -247,8 +227,8 @@ class RequstCounterView(APIView):
         To count the number of requests served
         """
         global NO_OF_REQUESTS_SERVED
-        NO_OF_REQUESTS_SERVED += 1
 
+        print(NO_OF_REQUESTS_SERVED)
         finalObj = {"no_of_requests": NO_OF_REQUESTS_SERVED}
         return Response(finalObj)
 
@@ -256,8 +236,6 @@ class RequstCounterView(APIView):
         """
         To reset the number of requests served
         """
-        global NO_OF_REQUESTS_SERVED
-        NO_OF_REQUESTS_SERVED = 0
 
         finalObj = {"no_of_requests": NO_OF_REQUESTS_SERVED}
         return Response(finalObj)
