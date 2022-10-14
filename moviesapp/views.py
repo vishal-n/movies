@@ -8,8 +8,6 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.contrib.auth import logout
 from django.http import JsonResponse
 
-# from movies.settings import NO_OF_REQUESTS_SERVED
-
 # Rest Framework imports
 from rest_framework import status
 from rest_framework.views import APIView
@@ -28,7 +26,6 @@ from moviesapp.middleware.request_middleware import NO_OF_REQUESTS_SERVED
 
 
 class TestAppAPIView(APIView):
-
     def get(self, request, format=None):
         try:
             result = add.delay(11, 15)
@@ -228,7 +225,6 @@ class RequstCounterView(APIView):
         """
         global NO_OF_REQUESTS_SERVED
 
-        print(NO_OF_REQUESTS_SERVED)
         finalObj = {"no_of_requests": NO_OF_REQUESTS_SERVED}
         return Response(finalObj)
 
