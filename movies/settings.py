@@ -53,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "moviesapp.middleware.request_middleware.simple_middleware",
+    "moviesapp.middleware.request_middleware.SaveRequest"
 ]
 
 ROOT_URLCONF = "movies.urls"

@@ -86,3 +86,10 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class UserVisit(models.Model):
+    endpoint = models.CharField(max_length=100, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    ip_address = models.CharField(max_length=20, null=True)
+    request_time = models.DateTimeField(auto_now=True)
