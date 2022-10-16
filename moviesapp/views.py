@@ -18,11 +18,10 @@ from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from rest_framework_jwt.views import JSONWebTokenAPIView
 
 # local imports
-from moviesapp.models import User, Collection, Movie
+from moviesapp.models import User, Collection, Movie, UserVisit
 from moviesapp.serializers import UserCreateSerializer, UserListSerializer
 from moviesapp.utils import generate_jwt_token
 from moviesapp.tasks import add
-from moviesapp.middleware.request_middleware import NO_OF_REQUESTS_SERVED
 
 
 class TestAppAPIView(APIView):
@@ -223,17 +222,13 @@ class RequstCounterView(APIView):
         """
         To count the number of requests served
         """
-        global NO_OF_REQUESTS_SERVED
-
-        finalObj = {"no_of_requests": NO_OF_REQUESTS_SERVED}
+        finalObj = {"no_of_requests": UserVisit.objects.count()}
         return Response(finalObj)
 
     def post(self, request):
         """
         To reset the number of requests served
         """
-        global NO_OF_REQUESTS_SERVED
-        NO_OF_REQUESTS_SERVED = 0
-
-        finalObj = {"no_of_requests": NO_OF_REQUESTS_SERVED}
+        UserVisit.objects.all().delete()
+        finalObj = {"status": "Request count reset to 0"}
         return Response(finalObj)
