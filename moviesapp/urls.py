@@ -1,4 +1,5 @@
 from django.urls import path, include
+from moviesapp.swagger import schema_view
 from moviesapp.views import (
     TestAppAPIView,
     RegistrationAPIView,
@@ -29,4 +30,5 @@ urlpatterns = [
     path(
         "request-count-reset/", RequstCounterView.as_view(), name="request-count-reset"
     ),
+    path("docs", schema_view.with_ui("swagger", cache_timeout=0), name="schema_view")
 ]

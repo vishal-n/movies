@@ -36,14 +36,14 @@ class SaveRequest:
 
         # If the url does not start with on of the prefixes above, then return response and dont save log.
         # (Remove these two lines below to log everything)
-        if not list(filter(request.get_full_path().startswith, self.prefixs)): 
-            return response 
+        # if not list(filter(request.get_full_path().startswith, self.prefixs)): 
+        #     return response 
 
         # Create instance of our model and assign values
         request_log = UserVisit(
             endpoint=request.get_full_path(),
-            remote_address=self.get_client_ip(request),
-            exec_time=_t,
+            ip_address=self.get_client_ip(request),
+            request_time=_t,
         )
 
         # Save log in db
